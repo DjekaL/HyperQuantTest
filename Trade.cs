@@ -14,6 +14,11 @@ namespace TestHQ
         public string Pair { get; set; }
 
         /// <summary>
+        /// Направление (buy/sell)
+        /// </summary>
+        public string Side { get; set; }
+
+        /// <summary>
         /// Цена трейда
         /// </summary>
         public decimal Price { get; set; }
@@ -23,10 +28,6 @@ namespace TestHQ
         /// </summary>
         public decimal Amount { get; set; }
 
-        /// <summary>
-        /// Направление (buy/sell)
-        /// </summary>
-        public string Side { get; set; }
 
         /// <summary>
         /// Время трейда

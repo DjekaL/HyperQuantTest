@@ -4,9 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Connector_Test"
+        xmlns:viewmodels="clr-namespace:Connector_Test"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <viewmodels:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <DataGrid ItemsSource="{Binding Currancy}" AutoGenerateColumns="True"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <DataGrid ItemsSource="{Binding TradesData}" AutoGenerateColumns="True"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <DataGrid ItemsSource="{Binding CandelsData}" AutoGenerateColumns="True"/>
+        </Grid>
     </Grid>
 </Window>

@@ -72,11 +72,11 @@ namespace Connector_Test
         private string tradePair;
         private string candlePair;
 
-        private void HandleMessage(string data) {
+        private async Task HandleMessage(string data) {
             var doc = JsonDocument.Parse(data);
             string key = string.Empty;
             try {
-                 key = doc.RootElement.GetProperty("key").GetString();
+                key = doc.RootElement.GetProperty("key").GetString();
                 string pair = key.Split(':')[2].TrimStart('t').TrimEnd(':');
                 candlePair = pair;
             }
