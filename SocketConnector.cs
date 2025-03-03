@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net.WebSockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net.WebSockets;
-using System.Security.Policy;
 using System.Text.Json;
 using TestHQ;
 
-namespace Connector_Test
-{
-    class SocketConnector : ConnectorTest.ITestConnector
-    {
+namespace Connector_Test {
+    class SocketConnector : ConnectorTest.ITestConnector {
         private ClientWebSocket _socket = new ClientWebSocket();
         private Uri _exchangeUrl = new("wss://api-pub.bitfinex.com/ws/2");
 
@@ -37,15 +30,23 @@ namespace Connector_Test
         }
 
         public void SubscribeTrades(string pair, int maxCount = 100) {
-           SendMessageAsync($"{{\"event\":\"subscribe\", \"channel\":\"trades\", \"symbol\":\"{pair}\"}}");
+            SendMessageAsync($"{{\"event\":\"subscribe\", \"channel\":\"trades\", \"symbol\":\"{pair}\"}}");
         }
 
         public void SubscribeCandles(string pair, int periodInSec, DateTimeOffset? from = null, DateTimeOffset? to = null, long? count = 0) {
-            //SendMessageAsync($"{{\"event\":\"subscribe\", \"channel\":\"candles\", \"key\":\"trade:{periodInSec}:{pair}\"}}");
-            SendMessageAsync($"{{\"event\":\"subscribe\", \"channel\":\"candles\", \"key\":\"trade:1m:{pair}\"}}");
+            string timeFrame = periodInSec switch {
+                60 => "1m",
+                300 => "5m",
+                900 => "15m",
+                3600 => "1h",
+                86400 => "1D",
+                _ => "1m"
+            };
+
+            SendMessageAsync($"{{\"event\":\"subscribe\", \"channel\":\"candles\", \"key\":\"trade:{timeFrame}:{pair}\"}}");
         }
 
-        public async void UnsubscribeTrades(string pair) { 
+        public async void UnsubscribeTrades(string pair) {
             SendMessageAsync($"{{\"event\":\"unsubscribe\", \"channel\":\"trades\", \"symbol\":\"{pair}\"}}");
         }
 
@@ -106,6 +107,7 @@ namespace Connector_Test
                         } else {
                             NewSellTrade?.Invoke(trade);
                         }
+                        DisconnectAsync();
                     }
                     if (elm.Count() == 6) {
                         var candle = new Candle {
@@ -119,11 +121,12 @@ namespace Connector_Test
                             TotalPrice = elm[5] * (elm[3] * elm[4] / 2)
                         };
                         CandleSeriesProcessing?.Invoke(candle);
+                        DisconnectAsync();
                     }
                 }
             }
             catch { }
-        } 
+        }
 
         public Task<IEnumerable<TestHQ.Trade>> GetNewTradesAsync(string pair, int maxCount) => throw new NotImplementedException();
         public Task<IEnumerable<TestHQ.Candle>> GetCandleSeriesAsync(string pair, int periodInSec, DateTimeOffset? from, DateTimeOffset? to = null, long? count = 0) => throw new NotImplementedException();

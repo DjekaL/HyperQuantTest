@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "YpiXTD73RtU=",
+  "dgSpecHash": "sugdSp8DBaA=",
   "success": true,
   "projectFilePath": "C:\\Users\\Djeka_L\\Desktop\\Connector_Test\\Connector_Test.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Djeka_L\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
+    "C:\\Users\\Djeka_L\\.nuget\\packages\\moq\\4.20.72\\moq.4.20.72.nupkg.sha512",
+    "C:\\Users\\Djeka_L\\.nuget\\packages\\nunit\\4.3.2\\nunit.4.3.2.nupkg.sha512",
+    "C:\\Users\\Djeka_L\\.nuget\\packages\\system.diagnostics.eventlog\\6.0.0\\system.diagnostics.eventlog.6.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
